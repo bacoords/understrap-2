@@ -18,9 +18,6 @@ const colors = [
 	'gray-dark',
 ];
 
-const BS4 = process.argv[ process.argv.length - 1 ] === 'BS4';
-const colorInfix = BS4 ? '' : 'bs-';
-
 module.exports = ( ctx ) => {
 	return {
 		map: {
@@ -31,10 +28,10 @@ module.exports = ( ctx ) => {
 		plugins: {
 			autoprefixer: {
 				cascade: false,
-				env: BS4 ? 'bs4' : 'bs5',
+				env: 'bs5',
 			},
 			'postcss-understrap-palette-generator': {
-				colors: colors.map( ( x ) => `--${ colorInfix }${ x }` ),
+				colors: colors.map( ( x ) => `--bs-${ x }` ),
 			},
 		},
 	};

@@ -26,15 +26,6 @@ let globals = {
 	jquery: 'jQuery', // Ensure we use jQuery which is always available even in noConflict mode
 	'@popperjs/core': 'Popper',
 };
-if ( BS4 ) {
-	// Adjustments for Bootstrap version 4.
-	bsVersion = 4;
-	bsSrcFile = 'bootstrap4.js';
-	fileDest = 'theme-bootstrap4';
-	delete globals[ '@popperjs/core' ];
-	Object.assign( globals, { 'popper.js': 'Popper' } );
-}
-
 const external = [ 'jquery' ];
 
 const plugins = [

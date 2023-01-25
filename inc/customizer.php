@@ -72,34 +72,6 @@ if ( ! function_exists( 'understrap_theme_customize_register' ) ) {
 		);
 
 		$wp_customize->add_setting(
-			'understrap_bootstrap_version',
-			array(
-				'default'           => 'bootstrap4',
-				'type'              => 'theme_mod',
-				'sanitize_callback' => 'sanitize_text_field',
-				'capability'        => 'edit_theme_options',
-			)
-		);
-
-		$wp_customize->add_control(
-			new WP_Customize_Control(
-				$wp_customize,
-				'understrap_bootstrap_version',
-				array(
-					'label'       => __( 'Bootstrap Version', 'understrap' ),
-					'description' => __( 'Choose between Bootstrap 4 or Bootstrap 5', 'understrap' ),
-					'section'     => 'understrap_theme_layout_options',
-					'type'        => 'select',
-					'choices'     => array(
-						'bootstrap4' => __( 'Bootstrap 4', 'understrap' ),
-						'bootstrap5' => __( 'Bootstrap 5', 'understrap' ),
-					),
-					'priority'    => apply_filters( 'understrap_bootstrap_version_priority', 10 ),
-				)
-			)
-		);
-
-		$wp_customize->add_setting(
 			'understrap_container_type',
 			array(
 				'default'           => 'container',
@@ -277,50 +249,3 @@ if ( ! function_exists( 'understrap_customize_preview_js' ) ) {
 	}
 }
 add_action( 'customize_preview_init', 'understrap_customize_preview_js' );
-
-/**
- * Loads javascript for conditionally showing customizer controls.
- */
-if ( ! function_exists( 'understrap_customize_controls_js' ) ) {
-	/**
-	 * Setup JS integration for live previewing.
-	 *
-	 * @since 1.1.0
-	 */
-	function understrap_customize_controls_js() {
-		$file    = '/js/customizer-controls.js';
-		$version = filemtime( get_template_directory() . $file );
-		if ( false === $version ) {
-			$version = time();
-		}
-
-		wp_enqueue_script(
-			'understrap_customizer',
-			get_template_directory_uri() . $file,
-			array( 'customize-preview' ),
-			(string) $version,
-			true
-		);
-	}
-}
-add_action( 'customize_controls_enqueue_scripts', 'understrap_customize_controls_js' );
-
-if ( ! function_exists( 'understrap_default_navbar_type' ) ) {
-	/**
-	 * Overrides the responsive navbar type for Bootstrap 4.
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param string $current_mod Current navbar type.
-	 * @return string Maybe filtered navbar type.
-	 */
-	function understrap_default_navbar_type( $current_mod ) {
-
-		if ( 'bootstrap5' !== get_theme_mod( 'understrap_bootstrap_version' ) ) {
-			$current_mod = 'collapse';
-		}
-
-		return $current_mod;
-	}
-}
-add_filter( 'theme_mod_understrap_navbar_type', 'understrap_default_navbar_type', 20 );
